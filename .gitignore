@@ -1,0 +1,8 @@
+/venv/
+/dataset/dataset_venv/
+/linearRegression/linReg_venv/
+/randomForest/ranFor_venv/
+.temperature_prediction.iml
+.idea/
+.env
+.model_comparison_results.csv
