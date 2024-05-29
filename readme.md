@@ -30,6 +30,11 @@ pip install virtualenv
 
 ## Dataset Generation
 
+The datasets train and test are already generated and stored in the dataset directory. 
+It is based on average values from: https://www.laenderdaten.info/Europa/Oesterreich/Klima-Tirol.php
+Those can be adjusted in the generate_dataset.py file.
+If you want to generate a new dataset, follow these steps:
+
 1. Navigate to the dataset directory and create a virtual environment:
 
     ```bash
