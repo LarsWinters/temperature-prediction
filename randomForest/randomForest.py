@@ -1,24 +1,20 @@
 import pandas as pd
-from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 import joblib
 import os
 
-# Load the dataset
-dataset_path = os.path.join('..', 'dataset', 'train', 'temperature_data.csv')
-df = pd.read_csv(dataset_path)
+# Load the training dataset
+train_dataset_path = os.path.join('..', 'dataset', 'train', 'temperature_data.csv')
+train_df = pd.read_csv(train_dataset_path)
 
 # Convert datetime to numerical format (e.g., timestamp)
-df['datetime'] = pd.to_datetime(df['datetime'])
-df['timestamp'] = df['datetime'].astype(int) / 10**9  # Convert to seconds
+train_df['datetime'] = pd.to_datetime(train_df['datetime'])
+train_df['timestamp'] = train_df['datetime'].astype(int) / 10**9  # Convert to seconds
 
-# Split the data into features and target
-X = df[['timestamp', 'current_temp', 'outside_temp', 'humidity', 'co2']]
-y = df['predicted_temp']
-
-# Split the data into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+# Split the training data into features and target
+X_train = train_df[['timestamp', 'current_temp', 'outside_temp', 'humidity', 'co2']]
+y_train = train_df['predicted_temp']
 
 # Train the model
 model = RandomForestRegressor(n_estimators=100, random_state=0)
@@ -28,6 +24,18 @@ model.fit(X_train, y_train)
 os.makedirs('models', exist_ok=True)
 joblib.dump(model, 'models/temperature_model.pkl')
 print('Model trained and saved to models/temperature_model.pkl')
+
+# Load the test dataset
+test_dataset_path = os.path.join('..', 'dataset', 'test', 'temperature_data.csv')
+test_df = pd.read_csv(test_dataset_path)
+
+# Convert datetime to numerical format (e.g., timestamp)
+test_df['datetime'] = pd.to_datetime(test_df['datetime'])
+test_df['timestamp'] = test_df['datetime'].astype(int) / 10**9  # Convert to seconds
+
+# Split the test data into features and target
+X_test = test_df[['timestamp', 'current_temp', 'outside_temp', 'humidity', 'co2']]
+y_test = test_df['predicted_temp']
 
 # Evaluate the model
 y_pred = model.predict(X_test)
